@@ -1,0 +1,21 @@
+provider: openai
+
+models:
+  global_model: gpt-4.1
+  style_model: ft:gpt-4o-mini:org:matt-kfa-v1
+
+params:
+  temperature: 0.2
+  max_output_tokens: 1500
+
+chunking:
+  strategy: tokens
+  chunk_tokens: 2000
+  overlap_tokens: 200
+  prefer_sentence_boundary: true
+
+io:
+  input_format: auto
+  export_md: true
+  export_docx: false
+  export_csv: true

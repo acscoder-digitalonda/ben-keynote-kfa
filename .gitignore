@@ -1,0 +1,9 @@
+# Ignore all hidden files/folders (starting with .)
+.*
+
+# But keep the .gitignore file itself
+!.gitignore
+
+# Ignore data folder
+data/
+.env
