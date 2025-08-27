@@ -7,6 +7,7 @@ import pandas as pd
 from typing import Optional
 from kfa.cli import run as run_cli
 from kfa.config import load_config
+from kfa.config_manager import ConfigManager, create_config_sidebar
 
 # Configure Streamlit page
 st.set_page_config(
@@ -99,6 +100,9 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 def main():
+    # Initialize configuration manager with reliable storage
+    config_manager = ConfigManager(storage_type="reliable")
+    
     # Header
     st.markdown("""
     <div class="main-header">
@@ -109,25 +113,14 @@ def main():
     
     # Sidebar configuration
     with st.sidebar:
-        st.header("⚙️ Configuration")
+        user_config = create_config_sidebar(config_manager)
         
-        # Processing strategy
-        strategy = st.selectbox(
-            "Processing Strategy",
-            options=["tokens", "scene_map"],
-            format_func=lambda x: {
-                "tokens": "Token-based Chunking (Recommended)",
-                "scene_map": "Scene Map Analysis (Advanced)"
-            }[x],
-            help="Choose how to split your content for analysis"
-        )
-        
-        # Advanced settings
-        with st.expander("Advanced Settings"):
-            chunk_tokens = st.slider("Chunk Size (tokens)", 500, 4000, 2000)
-            overlap_tokens = st.slider("Overlap (tokens)", 50, 500, 200)
-            temperature = st.slider("AI Temperature", 0.0, 1.0, 0.2, 0.1)
-            max_output_tokens = st.slider("Max Output Tokens", 500, 3000, 1500)
+        # Extract values for processing
+        strategy = user_config['strategy']
+        chunk_tokens = user_config['chunk_tokens']
+        overlap_tokens = user_config['overlap_tokens']
+        temperature = user_config['temperature']
+        max_output_tokens = user_config['max_output_tokens']
         
         st.markdown("---")
         st.markdown("### 📋 Supported Formats")
